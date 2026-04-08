@@ -43,4 +43,23 @@ def show_menu():
     print("|  6. Exit                       |")
     print("==================================")
 
-# add student
+def add_student():
+    if len(names) >= MAX_STUDENTS:
+        print("\n  [!] Student limit reached.")
+        return
+
+    print_header("ADD STUDENT")
+
+    name = prompt_non_empty("  Name    : ")
+    age = int(prompt_positive_number("  Age     : "))
+    course = prompt_non_empty("  Course  : ")
+    grade = prompt_positive_number("  Grade   : ")
+
+    names.append(name)
+    ages.append(age)
+    courses.append(course)
+    grades.append(grade)
+
+    print("\n  [✓] Student added successfully!")
+
+    # view students
