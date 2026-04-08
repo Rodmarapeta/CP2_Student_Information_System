@@ -42,3 +42,5 @@ def show_menu():
     print("|  5. Search Student             |")
     print("|  6. Exit                       |")
     print("==================================")
+
+# add student
