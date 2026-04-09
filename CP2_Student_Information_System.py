@@ -62,4 +62,20 @@ def add_student():
 
     print("\n  [✓] Student added successfully!")
 
-    # view students
+def view_students():
+    print_header("STUDENT RECORDS")
+
+    if len(names) == 0:
+        print("  No student records yet.")
+        return
+
+    print(f"  {'No.':<4} {'Name':<18} {'Age':<5} {'Course':<12} {'Grade':<8}")
+    print_divider(60)
+
+    for i in range(len(names)):
+        print(f"  {i+1:<4} {names[i]:<18} {ages[i]:<5} {courses[i]:<12} {grades[i]:<8.2f}")
+
+    print_divider(60)
+    print(f"  Total students: {len(names)}")
+
+# add update student
