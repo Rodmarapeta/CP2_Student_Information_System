@@ -128,5 +128,28 @@ def search_student():
     if not found:
         print("  No matching student found.")
 
-# Finish main menu loop and integrate all functions (add, view, update, delete, search)
-# Implement full program flow control including menu handling and user input validation
+def main():
+    print_header("STUDENT INFORMATION SYSTEM")
+
+    while True:
+        show_menu()
+        choice = input("  Enter choice: ").strip()
+
+        if choice == "1":
+            add_student()
+        elif choice == "2":
+            view_students()
+        elif choice == "3":
+            update_student()
+        elif choice == "4":
+            delete_student()
+        elif choice == "5":
+            search_student()
+        elif choice == "6":
+            print("\n  Thank you for using the system!\n")
+            break
+        else:
+            print("\n  [!] Invalid choice. Enter 1-6.")
+
+
+main()
