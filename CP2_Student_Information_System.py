@@ -97,4 +97,21 @@ def update_student():
     else:
         print("  [!] Invalid selection.")
 
-        # add delete student
+def delete_student():
+    view_students()
+    if len(names) == 0:
+        return
+
+    index = int(prompt_positive_number("  Enter student number to delete: ")) - 1
+
+    if 0 <= index < len(names):
+        names.pop(index)
+        ages.pop(index)
+        courses.pop(index)
+        grades.pop(index)
+
+        print("\n  [✓] Student deleted!")
+    else:
+        print("  [!] Invalid selection.")
+
+# add search student
