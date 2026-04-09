@@ -78,4 +78,23 @@ def view_students():
     print_divider(60)
     print(f"  Total students: {len(names)}")
 
-# add update student
+def update_student():
+    view_students()
+    if len(names) == 0:
+        return
+
+    index = int(prompt_positive_number("  Enter student number to update: ")) - 1
+
+    if 0 <= index < len(names):
+        print("\n  Enter new details:")
+
+        names[index] = prompt_non_empty("  Name    : ")
+        ages[index] = int(prompt_positive_number("  Age     : "))
+        courses[index] = prompt_non_empty("  Course  : ")
+        grades[index] = prompt_positive_number("  Grade   : ")
+
+        print("\n  [✓] Student updated!")
+    else:
+        print("  [!] Invalid selection.")
+
+        # add delete student
