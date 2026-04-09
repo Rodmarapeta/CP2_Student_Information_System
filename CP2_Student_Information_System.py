@@ -114,4 +114,19 @@ def delete_student():
     else:
         print("  [!] Invalid selection.")
 
-# add search student
+def search_student():
+    print_header("SEARCH STUDENT")
+
+    keyword = prompt_non_empty("  Enter name: ").lower()
+    found = False
+
+    for i in range(len(names)):
+        if keyword in names[i].lower():
+            print(f"  Found: {names[i]} | Age: {ages[i]} | Course: {courses[i]} | Grade: {grades[i]:.2f}")
+            found = True
+
+    if not found:
+        print("  No matching student found.")
+
+# Finish main menu loop and integrate all functions (add, view, update, delete, search)
+# Implement full program flow control including menu handling and user input validation
