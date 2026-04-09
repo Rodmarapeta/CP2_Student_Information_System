@@ -132,7 +132,7 @@ def main():
     print_header("STUDENT INFORMATION SYSTEM")
 
     while True:
-        show_menu()
+        show_menu()5
         choice = input("  Enter choice: ").strip()
 
         if choice == "1":
