@@ -32,16 +32,17 @@ def prompt_positive_number(prompt):
             print("  [!] Invalid number.")
 
 def show_menu():
-    print("==================================")
-    print("|              MENU              |")
-    print("==================================")
-    print("|  1. Add Student                |")
-    print("|  2. View Students              |")
-    print("|  3. Update Student             |")
-    print("|  4. Delete Student             |")
-    print("|  5. Search Student             |")
-    print("|  6. Exit                       |")
-    print("==================================")
+    print("\n+----------------------------------+")
+    print("|  STUDENT INFORMATION SYSTEM     |")
+    print("+----------------------------------+")
+    print("|  1. Add Student                 |")
+    print("|  2. View Students               |")
+    print("|  3. Update Student              |")
+    print("|  4. Delete Student              |")
+    print("|  5. Search Student              |")
+    print("|  6. Exit                        |")
+    print("+----------------------------------+")
+    print("Choose an option (1-6): ")
 
 def add_student():
     if len(names) >= MAX_STUDENTS:
