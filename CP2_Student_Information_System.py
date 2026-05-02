@@ -42,7 +42,7 @@ def show_menu():
     print("|  5. Search Student              |")
     print("|  6. Exit                        |")
     print("+----------------------------------+")
-    print("Choose an option (1-6) ")
+    print("Choose an option (1-6): ") 
 
 def add_student():
     if len(names) >= MAX_STUDENTS:
