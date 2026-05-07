@@ -1,9 +1,37 @@
 MAX_STUDENTS = 100
+FILE_NAME = "students.txt"
 
 names = []
 ages = []
 courses = []
 grades = []
+
+def save_data():
+    file = open(FILE_NAME, "w")
+
+    for i in range(len(names)):
+        file.write(f"{names[i]},{ages[i]},{courses[i]},{grades[i]}\n")
+
+    file.close()
+
+
+def load_data():
+    try:
+        file = open(FILE_NAME, "r")
+
+        for line in file:
+            data = line.strip().split(",")
+
+            if len(data) == 4:
+                names.append(data[0])
+                ages.append(int(data[1]))
+                courses.append(data[2])
+                grades.append(float(data[3]))
+
+        file.close()
+
+    except FileNotFoundError:
+        pass
 
 def print_header(title):
     print("\n  ==============================")
@@ -16,18 +44,24 @@ def print_divider(length):
 def prompt_non_empty(prompt):
     while True:
         value = input(prompt).strip()
+
         if value:
             return value
+
         print("  [!] This field cannot be empty.")
 
 def prompt_positive_number(prompt):
     while True:
         value = input(prompt).strip()
+
         try:
             num = float(value)
+
             if num > 0:
                 return num
+
             print("  [!] Must be greater than 0.")
+
         except:
             print("  [!] Invalid number.")
 
@@ -42,7 +76,7 @@ def show_menu():
     print("|  5. Search Student              |")
     print("|  6. Exit                        |")
     print("+----------------------------------+")
-    print("Choose an option (1-6): ") 
+
 
 def add_student():
     if len(names) >= MAX_STUDENTS:
@@ -60,6 +94,8 @@ def add_student():
     ages.append(age)
     courses.append(course)
     grades.append(grade)
+
+    save_data()
 
     print("\n  [✓] Student added successfully!")
 
@@ -81,12 +117,14 @@ def view_students():
 
 def update_student():
     view_students()
+
     if len(names) == 0:
         return
 
     index = int(prompt_positive_number("  Enter student number to update: ")) - 1
 
     if 0 <= index < len(names):
+
         print("\n  Enter new details:")
 
         names[index] = prompt_non_empty("  Name    : ")
@@ -94,24 +132,32 @@ def update_student():
         courses[index] = prompt_non_empty("  Course  : ")
         grades[index] = prompt_positive_number("  Grade   : ")
 
+        save_data()
+
         print("\n  [✓] Student updated!")
+
     else:
         print("  [!] Invalid selection.")
 
 def delete_student():
     view_students()
+
     if len(names) == 0:
         return
 
     index = int(prompt_positive_number("  Enter student number to delete: ")) - 1
 
     if 0 <= index < len(names):
+
         names.pop(index)
         ages.pop(index)
         courses.pop(index)
         grades.pop(index)
 
+        save_data()
+
         print("\n  [✓] Student deleted!")
+
     else:
         print("  [!] Invalid selection.")
 
@@ -119,37 +165,53 @@ def search_student():
     print_header("SEARCH STUDENT")
 
     keyword = prompt_non_empty("  Enter name: ").lower()
+
     found = False
 
     for i in range(len(names)):
+
         if keyword in names[i].lower():
+
             print(f"  Found: {names[i]} | Age: {ages[i]} | Course: {courses[i]} | Grade: {grades[i]:.2f}")
+
             found = True
 
     if not found:
         print("  No matching student found.")
 
 def main():
+
+    load_data()
+
     print_header("STUDENT INFORMATION SYSTEM")
 
     while True:
+
         show_menu()
+
         choice = input("  Enter choice: ").strip()
 
         if choice == "1":
             add_student()
+
         elif choice == "2":
             view_students()
+
         elif choice == "3":
             update_student()
+
         elif choice == "4":
             delete_student()
+
         elif choice == "5":
             search_student()
+
         elif choice == "6":
             print("\n  Thank you for using the system!\n")
             break
+
         else:
             print("\n  [!] Invalid choice. Enter 1-6.")
-            
+
+
 main()
