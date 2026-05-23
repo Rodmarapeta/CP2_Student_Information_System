@@ -1,9 +1,4 @@
-<<<<<<< HEAD
 Rodmar Apeta,18,DIT,97.0
 James Aldrin Delos Santos,20,DIT,93.0
 Jocelyn Espinosa,20,DIT,97.0
 Ralph Espinosa,19,DIT,97.0
-=======
-Rodmar Apeta,18,DIT,95.0
-Jocelyn Espinosa,20,DIT,95.0
->>>>>>> 8eebe32baad36b253080c7b1dd98bbb36e6c6906
