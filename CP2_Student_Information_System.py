@@ -121,23 +121,27 @@ def update_student():
     if len(names) == 0:
         return
 
-    index = int(prompt_positive_number("  Enter student number to update: ")) - 1
+    try:
+        index = int(input("  Enter student number to update: ")) - 1
 
-    if 0 <= index < len(names):
+        if 0 <= index < len(names):
 
-        print("\n  Enter new details:")
+            print("\n  Enter new details:")
 
-        names[index] = prompt_non_empty("  Name    : ")
-        ages[index] = int(prompt_positive_number("  Age     : "))
-        courses[index] = prompt_non_empty("  Course  : ")
-        grades[index] = prompt_positive_number("  Grade   : ")
+            names[index] = prompt_non_empty("  Name    : ")
+            ages[index] = int(prompt_positive_number("  Age     : "))
+            courses[index] = prompt_non_empty("  Course  : ")
+            grades[index] = prompt_positive_number("  Grade   : ")
 
-        save_data()
+            save_data()
 
-        print("\n  [✓] Student updated!")
+            print("\n  [✓] Student updated!")
 
-    else:
-        print("  [!] Invalid selection.")
+        else:
+            print("  [!] Invalid selection.")
+
+    except ValueError:
+        print("  [!] Please enter a valid number.")
 
 def delete_student():
     view_students()
@@ -145,21 +149,32 @@ def delete_student():
     if len(names) == 0:
         return
 
-    index = int(prompt_positive_number("  Enter student number to delete: ")) - 1
+    try:
+        index = int(input("  Enter student number to delete: ")) - 1
 
-    if 0 <= index < len(names):
+        if 0 <= index < len(names):
 
-        names.pop(index)
-        ages.pop(index)
-        courses.pop(index)
-        grades.pop(index)
+            confirm = input(f"  Are you sure you want to delete {names[index]}? (yes/no): ").lower()
 
-        save_data()
+            if confirm == "yes":
 
-        print("\n  [✓] Student deleted!")
+                names.pop(index)
+                ages.pop(index)
+                courses.pop(index)
+                grades.pop(index)
 
-    else:
-        print("  [!] Invalid selection.")
+                save_data()
+
+                print("\n  [✓] Student deleted!")
+
+            else:
+                print("\n  Deletion cancelled.")
+
+        else:
+            print("  [!] Invalid selection.")
+
+    except ValueError:
+        print("  [!] Please enter a valid number.")
 
 def search_student():
     print_header("SEARCH STUDENT")
