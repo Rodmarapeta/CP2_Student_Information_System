@@ -25,8 +25,11 @@ while True:
         search_student(names, ages, courses, grades)
 
     elif choice == "6":
+        sort_students(names, ages, courses, grades, ids)
+
+    elif choice == "7":
         print("\n  Thank you for using the system!\n")
         break
 
     else:
-        print("\n  [!] Invalid choice. Enter 1-6.")
+        print("\n  [!] Invalid choice. Enter 1-7.")

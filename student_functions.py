@@ -13,8 +13,10 @@ def print_divider(length):
 def prompt_non_empty(prompt):
     while True:
         value = input(prompt).strip()
+
         if value:
             return value
+
         print("  [!] This field cannot be empty.")
 
 def prompt_positive_number(prompt):
@@ -41,7 +43,8 @@ def show_menu():
     print("|  3. Update Student              |")
     print("|  4. Delete Student              |")
     print("|  5. Search Student              |")
-    print("|  6. Exit                        |")
+    print("|  6. Sort Students               |")
+    print("|  7. Exit                        |")
     print("+----------------------------------+")
 
 def add_student(names, ages, courses, grades, ids):
@@ -143,3 +146,11 @@ def search_student(names, ages, courses, grades):
 
     if not found:
         print("No match found.")
+
+def sort_students(names, ages, courses, grades, ids):
+    combined = list(zip(ids, names, ages, courses, grades))
+    combined.sort(key=lambda x: x[1])
+
+    ids[:], names[:], ages[:], courses[:], grades[:] = zip(*combined)
+    save_data(names, ages, courses, grades, ids)
+    print("  [✓] Sorted by name!")
