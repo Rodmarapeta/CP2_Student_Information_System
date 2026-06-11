@@ -1,27 +1,25 @@
 from file_handler import load_data
 from student_functions import *
 
-names, ages, courses, grades = load_data()
+names, ages, courses, grades, ids = load_data()
 
 print_header("STUDENT INFORMATION SYSTEM")
 
 while True:
-
     show_menu()
-
-    choice = input("  Enter choice: ").strip()
+    choice = input("Enter choice: ")
 
     if choice == "1":
-        add_student(names, ages, courses, grades)
+        add_student(names, ages, courses, grades, ids)
 
     elif choice == "2":
-        view_students(names, ages, courses, grades)
+        view_students(names, ages, courses, grades, ids)
 
     elif choice == "3":
-        update_student(names, ages, courses, grades)
+        update_student(names, ages, courses, grades, ids)
 
     elif choice == "4":
-        delete_student(names, ages, courses, grades)
+        delete_student(names, ages, courses, grades, ids)
 
     elif choice == "5":
         search_student(names, ages, courses, grades)

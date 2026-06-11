@@ -1,35 +1,26 @@
 FILE_NAME = "students.txt"
 
-def save_data(names, ages, courses, grades):
-    file = open(FILE_NAME, "w")
-
-    for i in range(len(names)):
-        file.write(f"{names[i]},{ages[i]},{courses[i]},{grades[i]}\n")
-
-    file.close()
-
+def save_data(names, ages, courses, grades, ids):
+    with open(FILE_NAME, "w") as file:
+        for i in range(len(names)):
+            file.write(f"{ids[i]},{names[i]},{ages[i]},{courses[i]},{grades[i]}\n")
 
 def load_data():
-    names = []
-    ages = []
-    courses = []
-    grades = []
+    names, ages, courses, grades, ids = [], [], [], [], []
 
     try:
-        file = open(FILE_NAME, "r")
+        with open(FILE_NAME, "r") as file:
+            for line in file:
+                data = line.strip().split(",")
 
-        for line in file:
-            data = line.strip().split(",")
-
-            if len(data) == 4:
-                names.append(data[0])
-                ages.append(int(data[1]))
-                courses.append(data[2])
-                grades.append(float(data[3]))
-
-        file.close()
+                if len(data) == 5:
+                    ids.append(int(data[0]))
+                    names.append(data[1])
+                    ages.append(int(data[2]))
+                    courses.append(data[3])
+                    grades.append(float(data[4]))
 
     except FileNotFoundError:
         pass
 
-    return names, ages, courses, grades
+    return names, ages, courses, grades, ids

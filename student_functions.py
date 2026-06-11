@@ -13,10 +13,8 @@ def print_divider(length):
 def prompt_non_empty(prompt):
     while True:
         value = input(prompt).strip()
-
         if value:
             return value
-
         print("  [!] This field cannot be empty.")
 
 def prompt_positive_number(prompt):
@@ -46,8 +44,7 @@ def show_menu():
     print("|  6. Exit                        |")
     print("+----------------------------------+")
 
-def add_student(names, ages, courses, grades):
-
+def add_student(names, ages, courses, grades, ids):
     if len(names) >= MAX_STUDENTS:
         print("\n  [!] Student limit reached.")
         return
@@ -55,96 +52,94 @@ def add_student(names, ages, courses, grades):
     print_header("ADD STUDENT")
 
     name = prompt_non_empty("  Name    : ")
-    age = int(prompt_positive_number("  Age     : "))
-    course = prompt_non_empty("  Course  : ")
-    grade = prompt_positive_number("  Grade   : ")
+    
+    if name in names:
+        print("  [!] Student already exists.")
+        return
 
+    age = prompt_age("  Age     : ")
+    course = prompt_non_empty("  Course  : ")
+    grade = prompt_grade("  Grade   : ")
+
+    new_id = ids[-1] + 1 if ids else 1
+
+    ids.append(new_id)
     names.append(name)
     ages.append(age)
     courses.append(course)
     grades.append(grade)
 
-    save_data(names, ages, courses, grades)
-
+    save_data(names, ages, courses, grades, ids)
     print("\n  [✓] Student added successfully!")
 
-def view_students(names, ages, courses, grades):
-
+def view_students(names, ages, courses, grades, ids):
     print_header("STUDENT RECORDS")
 
     if len(names) == 0:
         print("  No student records yet.")
         return
 
-    print(f"  {'No.':<4} {'Name':<18} {'Age':<5} {'Course':<12} {'Grade':<8}")
-    print_divider(60)
+    print(f"{'ID':<5}{'Name':<18}{'Age':<5}{'Course':<12}{'Grade':<8}")
+    print_divider(55)
 
     for i in range(len(names)):
-        print(f"  {i+1:<4} {names[i]:<18} {ages[i]:<5} {courses[i]:<12} {grades[i]:<8.2f}")
+        print(f"{ids[i]:<5}{names[i]:<18}{ages[i]:<5}{courses[i]:<12}{grades[i]:<8.2f}")
 
-    print_divider(60)
-
-def update_student(names, ages, courses, grades):
-
-    view_students(names, ages, courses, grades)
-
+def update_student(names, ages, courses, grades, ids):
     if len(names) == 0:
         return
 
-    index = int(prompt_positive_number("  Enter student number to update: ")) - 1
+    try:
+        id_input = int(input("Enter ID to update: "))
 
-    if 0 <= index < len(names):
+        if id_input in ids:
+            index = ids.index(id_input)
 
-        names[index] = prompt_non_empty("  Name    : ")
-        ages[index] = int(prompt_positive_number("  Age     : "))
-        courses[index] = prompt_non_empty("  Course  : ")
-        grades[index] = prompt_positive_number("  Grade   : ")
+            print("\nEnter new details:")
+            names[index] = prompt_non_empty("Name: ")
+            ages[index] = prompt_age("Age: ")
+            courses[index] = prompt_non_empty("Course: ")
+            grades[index] = prompt_grade("Grade: ")
 
-        save_data(names, ages, courses, grades)
+            save_data(names, ages, courses, grades, ids)
+            print("\n  [✓] Student updated!")
 
-        print("\n  [✓] Student updated!")
+        else:
+            print("  [!] ID not found.")
 
-    else:
-        print("  [!] Invalid selection.")
+    except:
+        print("  [!] Invalid input.")
 
-def delete_student(names, ages, courses, grades):
+def delete_student(names, ages, courses, grades, ids):
+    try:
+        id_input = int(input("Enter ID to delete: "))
 
-    view_students(names, ages, courses, grades)
+        if id_input in ids:
+            index = ids.index(id_input)
 
-    if len(names) == 0:
-        return
+            confirm = input(f"Delete {names[index]}? (yes/no): ")
+            if confirm.lower() == "yes":
 
-    index = int(prompt_positive_number("  Enter student number to delete: ")) - 1
+                for arr in (names, ages, courses, grades, ids):
+                    arr.pop(index)
 
-    if 0 <= index < len(names):
+                save_data(names, ages, courses, grades, ids)
+                print("  [✓] Deleted successfully!")
 
-        names.pop(index)
-        ages.pop(index)
-        courses.pop(index)
-        grades.pop(index)
+        else:
+            print("  [!] ID not found.")
 
-        save_data(names, ages, courses, grades)
-
-        print("\n  [✓] Student deleted!")
-
-    else:
-        print("  [!] Invalid selection.")
+    except:
+        print("  [!] Invalid input.")
 
 def search_student(names, ages, courses, grades):
-
-    print_header("SEARCH STUDENT")
-
-    keyword = prompt_non_empty("  Enter name: ").lower()
-
+    keyword = input("Enter name: ").lower()
     found = False
 
     for i in range(len(names)):
-
         if keyword in names[i].lower():
-
-            print(f"  Found: {names[i]} | Age: {ages[i]} | Course: {courses[i]} | Grade: {grades[i]:.2f}")
-
+            print(f"{names[i]} | {courses[i]} | {grades[i]}")
             found = True
 
     if not found:
-        print("  No matching student found.")
+        print("No match found.")
