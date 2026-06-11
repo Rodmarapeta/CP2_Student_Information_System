@@ -13,26 +13,29 @@ def print_divider(length):
 def prompt_non_empty(prompt):
     while True:
         value = input(prompt).strip()
-
         if value:
             return value
-
         print("  [!] This field cannot be empty.")
 
-def prompt_positive_number(prompt):
+def prompt_age(prompt):
     while True:
-        value = input(prompt).strip()
-
         try:
-            num = float(value)
-
-            if num > 0:
-                return num
-
-            print("  [!] Must be greater than 0.")
-
+            age = int(input(prompt))
+            if 0 <= age <= 100:
+                return age
+            print("  [!] Age must be between 0 and 100.")
         except:
-            print("  [!] Invalid number.")
+            print("  [!] Invalid input.")
+
+def prompt_grade(prompt):
+    while True:
+        try:
+            grade = float(input(prompt))
+            if 0 <= grade <= 100:
+                return grade
+            print("  [!] Grade must be between 0 and 100.")
+        except:
+            print("  [!] Invalid input.")
 
 def show_menu():
     print("\n+----------------------------------+")
@@ -154,3 +157,4 @@ def sort_students(names, ages, courses, grades, ids):
     ids[:], names[:], ages[:], courses[:], grades[:] = zip(*combined)
     save_data(names, ages, courses, grades, ids)
     print("  [✓] Sorted by name!")
+
