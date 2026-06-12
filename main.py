@@ -8,7 +8,8 @@ current_user, role = login()
 print_header("STUDENT INFORMATION SYSTEM")
 
 while True:
-    show_menu()
+    show_menu(role)
+
     choice = input("Enter choice: ")
 
     if choice == "1":
