@@ -11,7 +11,7 @@ window.configure(bg="white")
 
 def exit_app():
     confirm = messagebox.askyesno("Exit", "Are you sure you want to exit?")
-    if confirm:Improve login UI layout, increase window size, and fix button visibility and alignment issues
+    if confirm:
         window.destroy()
 
 def logout():
