@@ -37,21 +37,20 @@ def prompt_grade(prompt):
         except:
             print("  [!] Invalid input.")
 
-def show_menu(role):
-
-    if role == "admin":
-
-        print("\n+----------------------------------+")
-        print("|  STUDENT INFORMATION SYSTEM     |")
-        print("+----------------------------------+")
-        print("|  1. Add Student                 |")
-        print("|  2. View Students               |")
-        print("|  3. Update Student              |")
-        print("|  4. Delete Student              |")
-        print("|  5. Search Student              |")
-        print("|  6. Sort Students               |")
-        print("|  7. Exit                        |")
-        print("+----------------------------------+")
+def show_menu():
+    print("\n+----------------------------------+")
+    print("|  STUDENT INFORMATION SYSTEM     |")
+    print("+----------------------------------+")
+    print("|  1. Add Student                 |")
+    print("|  2. View Students               |")
+    print("|  3. Update Student              |")
+    print("|  4. Delete Student              |")
+    print("|  5. Search Student              |")
+    print("|  6. Sort Students               |")
+    print("|  7. Statistics                  |")
+    print("|  8. Logout                      |")
+    print("|  9. Exit                        |")
+    print("+----------------------------------+")
 
     else:
 

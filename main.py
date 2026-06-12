@@ -8,8 +8,7 @@ current_user, role = login()
 print_header("STUDENT INFORMATION SYSTEM")
 
 while True:
-    show_menu(role)
-
+    show_menu()
     choice = input("Enter choice: ")
 
     if choice == "1":
@@ -34,8 +33,12 @@ while True:
         statistics(names, courses, grades)
 
     elif choice == "8":
-        print("\n  Thank you for using the system!\n")
+        print("\nLogging out...\n")
+        current_user, role = login()
+
+    elif choice == "9":
+        print("\nThank you for using the system!\n")
         break
 
     else:
-        print("\n  [!] Invalid choice. Enter 1-8.")
+        print("\n[!] Invalid choice. Enter 1-9.")
