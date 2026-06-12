@@ -269,3 +269,27 @@ def login():
         except FileNotFoundError:
             print("\nNo accounts found.")
             register()
+            
+def register():
+    print_header("REGISTER")
+
+    username = input("Create Username: ")
+    password = input("Create Password: ")
+
+    try:
+        with open(ACCOUNT_FILE, "r") as file:
+
+            for line in file:
+                data = line.strip().split(",")
+
+                if data[0] == username:
+                    print("Username already exists.")
+                    return
+
+    except:
+        pass
+
+    with open(ACCOUNT_FILE, "a") as file:
+        file.write(f"{username},{password}\n")
+
+    print("\n  [✓] Account created successfully!")
