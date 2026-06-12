@@ -319,6 +319,147 @@ def open_view_students():
 
     tree.bind("<Double-1>", on_select)
 
+def open_edit_student(selected_data):
+
+    edit_win = tk.Toplevel(window)
+    edit_win.title("Edit Student")
+    edit_win.geometry("400x400")
+    edit_win.configure(bg="white")
+
+    tk.Label(
+        edit_win,
+        text="EDIT STUDENT",
+        font=("Arial", 18, "bold"),
+        fg="#800000",
+        bg="white"
+    ).pack(pady=10)
+
+    sid, name, age, course, grade = selected_data
+
+    tk.Label(edit_win, text="Name", bg="white").pack()
+    name_entry = tk.Entry(edit_win)
+    name_entry.insert(0, name)
+    name_entry.pack()
+
+    tk.Label(edit_win, text="Age", bg="white").pack()
+    age_entry = tk.Entry(edit_win)
+    age_entry.insert(0, age)
+    age_entry.pack()
+
+    tk.Label(edit_win, text="Course", bg="white").pack()
+    course_entry = tk.Entry(edit_win)
+    course_entry.insert(0, course)
+    course_entry.pack()
+
+    tk.Label(edit_win, text="Grade", bg="white").pack()
+    grade_entry = tk.Entry(edit_win)
+    grade_entry.insert(0, grade)
+    grade_entry.pack()
+
+    def save_edit():
+        try:
+            with open("students.txt", "r") as f:
+                lines = f.readlines()
+
+            with open("students.txt", "w") as f:
+                for line in lines:
+                    data = line.strip().split(",")
+
+                    if data[0] == sid:
+                        f.write(f"{sid},{name_entry.get()},{age_entry.get()},{course_entry.get()},{grade_entry.get()}\n")
+                    else:
+                        f.write(line)
+                        
+            if not messagebox.askyesno("Confirm", "Update this student record?"):
+             return
+            
+            messagebox.showinfo("Success", "Student updated!")
+            edit_win.destroy()
+
+        except FileNotFoundError:
+            messagebox.showerror("Error", "File not found")
+
+    tk.Button(
+        edit_win,
+        text="SAVE",
+        bg="#800000",
+        fg="white",
+        command=save_edit
+    ).pack(pady=10)
+
+def open_update_student():
+
+    up_win = tk.Toplevel(window)
+    up_win.title("Update Student")
+    up_win.geometry("600x500")
+    up_win.configure(bg="white")
+
+    frame = tk.Frame(up_win, bg="white")
+    frame.place(relx=0.5, rely=0.5, anchor="center")
+
+    tk.Label(
+        frame,
+        text="UPDATE STUDENT",
+        font=("Arial", 24, "bold"),
+        fg="#800000",
+        bg="white"
+    ).pack(pady=10)
+
+    tk.Label(frame, text="Enter Student ID", bg="white").pack()
+    id_entry = tk.Entry(frame, font=("Arial", 14), width=30, justify="center")
+    id_entry.pack(pady=10)
+
+    # fields
+    name_entry = tk.Entry(frame, font=("Arial", 14), width=30, justify="center")
+    age_entry = tk.Entry(frame, font=("Arial", 14), width=30, justify="center")
+    course_entry = tk.Entry(frame, font=("Arial", 14), width=30, justify="center")
+    grade_entry = tk.Entry(frame, font=("Arial", 14), width=30, justify="center")
+
+    def load_student():
+
+        sid = id_entry.get()
+
+        try:
+            with open("students.txt", "r") as f:
+                lines = f.readlines()
+
+            for line in lines:
+                data = line.strip().split(",")
+
+                if data[0] == sid:
+                    name_entry.delete(0, "end")
+                    age_entry.delete(0, "end")
+                    course_entry.delete(0, "end")
+                    grade_entry.delete(0, "end")
+
+                    name_entry.insert(0, data[1])
+                    age_entry.insert(0, data[2])
+                    course_entry.insert(0, data[3])
+                    grade_entry.insert(0, data[4])
+
+                    messagebox.showinfo("Found", "Student loaded!")
+                    return
+
+            messagebox.showerror("Error", "Student not found")
+
+        except FileNotFoundError:
+            messagebox.showerror("Error", "No file found")
+
+    tk.Button(frame, text="LOAD", command=load_student,
+              bg="#800000", fg="white").pack(pady=5)
+
+    tk.Label(frame, text="NAME", bg="white").pack()
+    name_entry.pack(pady=5)
+
+    tk.Label(frame, text="AGE", bg="white").pack()
+    age_entry.pack(pady=5)
+
+    tk.Label(frame, text="COURSE", bg="white").pack()
+    course_entry.pack(pady=5)
+
+    tk.Label(frame, text="GRADE", bg="white").pack()
+    grade_entry.pack(pady=5)
+
 def open_dashboard():
 
     dash = tk.Toplevel(window)
