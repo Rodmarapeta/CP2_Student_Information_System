@@ -582,6 +582,64 @@ def open_delete_student():
         command=do_delete
     ).pack(pady=10)
 
+def open_statistics():
+
+    stat_win = tk.Toplevel(window)
+    stat_win.title("Statistics")
+    stat_win.geometry("700x500")
+    stat_win.configure(bg="white")
+
+    frame = tk.Frame(stat_win, bg="white")
+    frame.place(relx=0.5, rely=0.5, anchor="center")
+
+    tk.Label(
+        frame,
+        text="STUDENT STATISTICS",
+        font=("Arial", 24, "bold"),
+        fg="#800000",
+        bg="white"
+    ).pack(pady=10)
+
+    text_box = tk.Text(frame, font=("Arial", 12), width=60, height=20)
+    text_box.pack(pady=10)
+
+    try:
+        with open("students.txt", "r") as f:
+            lines = f.readlines()
+
+        if not lines:
+            text_box.insert("end", "No student records found.")
+            return
+
+        total = len(lines)
+
+        grades = []
+        passed = 0
+        failed = 0
+
+        for line in lines:
+            data = line.strip().split(",")
+            grade = float(data[4])
+            grades.append(grade)
+
+            if grade >= 75:
+                passed += 1
+            else:
+                failed += 1
+
+        avg = sum(grades) / total
+        highest = max(grades)
+        lowest = min(grades)
+
+        text_box.insert("end", f"Total Students: {total}\n")
+        text_box.insert("end", f"Passed: {passed}\n")
+        text_box.insert("end", f"Failed: {failed}\n\n")
+        text_box.insert("end", f"Average Grade: {avg:.2f}\n")
+        text_box.insert("end", f"Highest Grade: {highest}\n")
+        text_box.insert("end", f"Lowest Grade: {lowest}\n")
+
+    except FileNotFoundError:
+        text_box.insert("end", "No file found.")
 
 def open_dashboard():
 
