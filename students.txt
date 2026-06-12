@@ -1,4 +1,9 @@
-Rodmar Apeta,18,DIT,97.0
-James Aldrin Delos Santos,20,DIT,93.0
-Jocelyn Espinosa,20,DIT,97.0
-Ralph Espinosa,19,DIT,97.0
+8,Rodmar A. Apeta,18,DIT,94.0
+5,Jocelyn Espinosa,20,DIT,97.0
+17,Jim Anderson Malangsa,19,DIT,93.0
+22,James Aldrin Delos Santos,20,DIT,90.0
+9,Kirk Jancey Paz,19,DIT,91.0
+16,Lea May Pinoc,19,DIT,92.0
+11,Julian Marie Amores,18,DIT,98.0
+27,Precious Lorielle Borlaza,19,DIT,93.0
+26,Ralph Espinosa,19,DIT,98.0
