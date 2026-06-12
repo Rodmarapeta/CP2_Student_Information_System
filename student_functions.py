@@ -47,7 +47,8 @@ def show_menu():
     print("|  4. Delete Student              |")
     print("|  5. Search Student              |")
     print("|  6. Sort Students               |")
-    print("|  7. Exit                        |")
+    print("|  7. Statistics                  |")
+    print("|  8. Exit                        |")
     print("+----------------------------------+")
 
 def add_student(names, ages, courses, grades, ids):
@@ -152,9 +153,80 @@ def search_student(names, ages, courses, grades):
 
 def sort_students(names, ages, courses, grades, ids):
     combined = list(zip(ids, names, ages, courses, grades))
-    combined.sort(key=lambda x: x[1])
+    combined.sort(key=lambda x: x[1])  
 
     ids[:], names[:], ages[:], courses[:], grades[:] = zip(*combined)
     save_data(names, ages, courses, grades, ids)
     print("  [✓] Sorted by name!")
 
+def statistics(names, courses, grades):
+    print_header("STUDENT STATISTICS")
+
+    if len(names) == 0:
+        print("  No student records available.")
+        return
+
+    total_students = len(names)
+
+    average_grade = sum(grades) / total_students
+
+    highest_grade = max(grades)
+    lowest_grade = min(grades)
+
+    highest_student = names[grades.index(highest_grade)]
+    lowest_student = names[grades.index(lowest_grade)]
+
+    passed = 0
+    failed = 0
+
+    for grade in grades:
+        if grade >= 75:
+            passed += 1
+        else:
+            failed += 1
+
+    print(f"\n  Total Students  : {total_students}")
+    print(f"  Passed Students : {passed}")
+    print(f"  Failed Students : {failed}")
+    print(f"  Average Grade   : {average_grade:.2f}")
+    print(f"  Highest Grade   : {highest_grade:.2f} ({highest_student})")
+    print(f"  Lowest Grade    : {lowest_grade:.2f} ({lowest_student})")
+
+    print("\n  AVERAGE GRADE PER COURSE")
+    print_divider(35)
+
+    unique_courses = []
+
+    for course in courses:
+        if course not in unique_courses:
+            unique_courses.append(course)
+
+    for course in unique_courses:
+        total = 0
+        count = 0
+
+        for i in range(len(courses)):
+            if courses[i] == course:
+                total += grades[i]
+                count += 1
+
+        average = total / count
+        print(f"  {course:<15} : {average:.2f}")
+
+    print("\n  TOP 3 STUDENTS")
+    print_divider(35)
+
+    students = []
+
+    for i in range(len(names)):
+        students.append((names[i], courses[i], grades[i]))
+
+    students.sort(key=lambda x: x[2], reverse=True)
+
+    top_count = min(3, len(students))
+
+    for i in range(top_count):
+        print(
+            f"  {i+1}. {students[i][0]} "
+            f"({students[i][1]}) - {students[i][2]:.2f}"
+        )
