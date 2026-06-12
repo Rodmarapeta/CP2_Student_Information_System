@@ -80,3 +80,52 @@ def open_login():
         fg="white",
         command=do_login
     ).pack(pady=15)
+
+def open_register():
+
+    reg_win = tk.Toplevel(window)
+    reg_win.title("Register")
+    reg_win.geometry("500x400")
+    reg_win.configure(bg="white")
+
+    frame = tk.Frame(reg_win, bg="white")
+    frame.place(relx=0.5, rely=0.5, anchor="center")
+
+    tk.Label(frame, text="REGISTER", font=("Arial", 34, "bold"),
+             fg="#800000", bg="white").pack(pady=10)
+
+    tk.Label(frame, text="USERNAME", font=("Arial", 14, "bold"), bg="white").pack()
+    username_entry = tk.Entry(frame, font=("Arial", 14), width=25, justify="center")
+    username_entry.pack(pady=5)
+
+    tk.Label(frame, text="PASSWORD", font=("Arial", 14, "bold"), bg="white").pack()
+    password_entry = tk.Entry(frame, font=("Arial", 14), width=25, show="*", justify="center")
+    password_entry.pack(pady=5)
+
+    tk.Label(frame, text="ROLE (admin/user)", font=("Arial", 14, "bold"), bg="white").pack()
+    role_entry = tk.Entry(frame, font=("Arial", 14), width=25, justify="center")
+    role_entry.pack(pady=5)
+
+    def do_register():
+        username = username_entry.get()
+        password = password_entry.get()
+        role = role_entry.get().lower()
+
+        if role not in ["admin", "user"]:
+            role = "user"
+
+        with open("accounts.txt", "a") as f:
+            f.write(f"{username},{password},{role}\n")
+
+        messagebox.showinfo("Success", "Account Created!")
+        reg_win.destroy()
+
+    tk.Button(
+        frame,
+        text="REGISTER",
+        font=("Arial", 14, "bold"),
+        width=18,
+        bg="#FFD700",
+        fg="black",
+        command=do_register
+    ).pack(pady=15)
