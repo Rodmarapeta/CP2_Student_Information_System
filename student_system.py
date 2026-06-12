@@ -20,3 +20,63 @@ def logout():
         window.destroy()
         import os
         os.system("python gui.py")
+
+def open_login(): 
+
+    login_win = tk.Toplevel(window)
+    login_win.title("Login")
+    login_win.geometry("450x350")
+    login_win.configure(bg="white")
+
+    frame = tk.Frame(login_win, bg="white")
+    frame.place(relx=0.5, rely=0.5, anchor="center")
+
+    tk.Label(frame, text="LOGIN",
+             font=("Arial", 34, "bold"),
+             fg="#800000", bg="white").pack(pady=10)
+
+    tk.Label(frame, text="USERNAME", font=("Arial", 14, "bold"), bg="white").pack()
+    username_entry = tk.Entry(frame, font=("Arial", 14), width=25, justify="center")
+    username_entry.pack(pady=5)
+
+    tk.Label(frame, text="PASSWORD", font=("Arial", 14, "bold"), bg="white").pack()
+    password_entry = tk.Entry(frame, font=("Arial", 14), width=25, show="*", justify="center")
+    password_entry.pack(pady=5)
+
+    def do_login():
+        username = username_entry.get()
+        password = password_entry.get()
+
+        try:
+            with open("accounts.txt", "r") as f:
+                for line in f:
+                    user, pwd, role = line.strip().split(",")
+
+                    if username == user and password == pwd:
+
+                        current_user["username"] = user
+                        current_user["role"] = role
+
+                        messagebox.showinfo(
+                            "Success",
+                            f"Login Successful!\nRole: {role}"
+                        )
+
+                        login_win.destroy()
+                        open_dashboard()
+                        return
+
+            messagebox.showerror("Error", "Invalid login")
+
+        except FileNotFoundError:
+            messagebox.showerror("Error", "No accounts found")
+
+    tk.Button(
+        frame,
+        text="LOGIN",
+        font=("Arial", 14, "bold"),
+        width=18,
+        bg="#800000",
+        fg="white",
+        command=do_login
+    ).pack(pady=15)
