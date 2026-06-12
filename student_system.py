@@ -130,6 +130,112 @@ def open_register():
         command=do_register
     ).pack(pady=15)
 
+def open_add_student():
+
+    add_win = tk.Toplevel(window)
+    add_win.title("Add Student")
+    add_win.geometry("500x450")
+    add_win.configure(bg="white")
+
+    frame = tk.Frame(add_win, bg="white")
+    frame.place(relx=0.5, rely=0.5, anchor="center")
+
+    tk.Label(frame, text="ADD STUDENT",
+             font=("Arial", 28, "bold"),
+             fg="#800000", bg="white").pack(pady=10)
+
+    tk.Label(frame, text="ID", bg="white").pack()
+    id_entry = tk.Entry(frame, font=("Arial", 14), width=25, justify="center")
+    id_entry.pack(pady=5)
+
+    tk.Label(frame, text="NAME", bg="white").pack()
+    name_entry = tk.Entry(frame, font=("Arial", 14), width=25, justify="center")
+    name_entry.pack(pady=5)
+
+    tk.Label(frame, text="AGE", bg="white").pack()
+    age_entry = tk.Entry(frame, font=("Arial", 14), width=25, justify="center")
+    age_entry.pack(pady=5)
+
+    tk.Label(frame, text="COURSE", bg="white").pack()
+    course_entry = tk.Entry(frame, font=("Arial", 14), width=25, justify="center")
+    course_entry.pack(pady=5)
+
+    tk.Label(frame, text="GRADE", bg="white").pack()
+    grade_entry = tk.Entry(frame, font=("Arial", 14), width=25, justify="center")
+    grade_entry.pack(pady=5)
+
+    def save_student():
+     sid = id_entry.get().strip()
+    name = name_entry.get().strip()
+    age = age_entry.get().strip()
+    course = course_entry.get().strip()
+    grade = grade_entry.get().strip()
+
+    if not sid or not name or not age or not course or not grade:
+        messagebox.showerror("Error", "Fill all fields!")
+        return
+
+    if not age.isdigit():
+        messagebox.showerror("Error", "Age must be a number")
+        return
+
+    try:
+        grade_num = float(grade)
+
+        if grade_num < 0 or grade_num > 100:
+            messagebox.showerror(
+                "Error",
+                "Grade must be between 0 and 100"
+            )
+            return
+
+    except ValueError:
+        messagebox.showerror(
+            "Error",
+            "Grade must be numeric"
+        )
+        return
+
+    try:
+        with open("students.txt", "r") as f:
+            for line in f:
+                if line.strip().split(",")[0] == sid:
+                    messagebox.showerror(
+                        "Error",
+                        "Student ID already exists!"
+                    )
+                    return
+    except FileNotFoundError:
+        pass
+
+    confirm = messagebox.askyesno(
+        "Confirm Save",
+        "Are you sure you want to save this student?"
+    )
+
+    if not confirm:
+        return
+
+    with open("students.txt", "a") as f:
+        f.write(f"{sid},{name},{age},{course},{grade}\n")
+
+    messagebox.showinfo(
+        "Success",
+        "Student Added Successfully!"
+    )
+
+    add_win.destroy()
+
+    tk.Button(
+        frame,
+        text="SAVE",
+        font=("Arial", 14, "bold"),
+        width=18,
+        bg="#800000",
+        fg="white",
+        command=save_student
+    ).pack(pady=15)
+
 def open_dashboard():
 
     dash = tk.Toplevel(window)
@@ -279,3 +385,4 @@ tk.Button(button_frame,
 ).grid(row=3, column=1)
 
 window.mainloop()
+
