@@ -230,3 +230,42 @@ def statistics(names, courses, grades):
             f"  {i+1}. {students[i][0]} "
             f"({students[i][1]}) - {students[i][2]:.2f}"
         )
+
+        ACCOUNT_FILE = "accounts.txt"
+
+def register():
+    print_header("REGISTER")
+
+    username = input("Create Username: ")
+    password = input("Create Password: ")
+
+    with open(ACCOUNT_FILE, "a") as file:
+        file.write(f"{username},{password}\n")
+
+    print("\n  [✓] Account created successfully!")
+
+def login():
+    print_header("LOGIN")
+
+    while True:
+        username = input("Username: ")
+        password = input("Password: ")
+
+        try:
+            with open(ACCOUNT_FILE, "r") as file:
+
+                for line in file:
+                    data = line.strip().split(",")
+
+                    if len(data) == 2:
+                        user, pwd = data
+
+                        if username == user and password == pwd:
+                            print("\n  [✓] Login Successful!")
+                            return
+
+            print("\n  [!] Invalid username or password.")
+
+        except FileNotFoundError:
+            print("\nNo accounts found.")
+            register()
