@@ -641,6 +641,83 @@ def open_statistics():
     except FileNotFoundError:
         text_box.insert("end", "No file found.")
 
+def open_change_password():
+
+    win = tk.Toplevel(window)
+    win.title("Change Password")
+    win.geometry("400x300")
+
+    tk.Label(win, text="Change Password", font=("Arial", 16, "bold")).pack(pady=10)
+
+    old_pass = tk.Entry(win, show="*")
+    old_pass.pack(pady=5)
+
+    new_pass = tk.Entry(win, show="*")
+    new_pass.pack(pady=5)
+
+    def update_pass():
+        user = current_user["username"]
+
+        try:
+            with open("accounts.txt", "r") as f:
+                lines = f.readlines()
+
+            with open("accounts.txt", "w") as f:
+                for line in lines:
+                    u, p, r = line.strip().split(",")
+
+                    if u == user and p == old_pass.get():
+                        f.write(f"{u},{new_pass.get()},{r}\n")
+                    else:
+                        f.write(line)
+
+            messagebox.showinfo("Success", "Password updated!")
+            win.destroy()
+
+        except:
+            messagebox.showerror("Error", "Something went wrong")
+
+    tk.Button(win, text="UPDATE", command=update_pass,
+              bg="#800000", fg="white").pack(pady=10)
+
+    def save_update():
+
+        sid = id_entry.get()
+
+        try:
+            with open("students.txt", "r") as f:
+                lines = f.readlines()
+
+            new_lines = []
+
+            for line in lines:
+                data = line.strip().split(",")
+
+                if data[0] == sid:
+                    new_line = f"{sid},{name_entry.get()},{age_entry.get()},{course_entry.get()},{grade_entry.get()}\n"
+                    new_lines.append(new_line)
+                else:
+                    new_lines.append(line)
+
+            with open("students.txt", "w") as f:
+                f.writelines(new_lines)
+
+            messagebox.showinfo("Success", "Student updated!")
+            up_win.destroy()
+
+        except FileNotFoundError:
+            messagebox.showerror("Error", "No file found")
+
+    tk.Button(
+        frame,
+        text="SAVE UPDATE",
+        font=("Arial", 14, "bold"),
+        bg="#800000",
+        fg="white",
+        width=15,
+        command=save_update
+    ).pack(pady=10)
+
 def open_dashboard():
 
     dash = tk.Toplevel(window)
