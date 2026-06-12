@@ -3,7 +3,35 @@ from student_functions import *
 
 names, ages, courses, grades, ids = load_data()
 
-current_user, role = login()
+
+def start_menu():
+    print("\n==============================")
+    print("  WELCOME TO SYSTEM")
+    print("==============================")
+    print("1. Login")
+    print("2. Register")
+    print("3. Exit")
+    print("==============================")
+
+while True:
+
+    start_menu()
+    choice = input("Choose option: ")
+
+    if choice == "1":
+        current_user, role = login()
+        break
+
+    elif choice == "2":
+        register()
+        print("\nYou can now login.\n")
+
+    elif choice == "3":
+        print("Goodbye!")
+        exit()
+
+    else:
+        print("Invalid choice.")
 
 while True:
 
