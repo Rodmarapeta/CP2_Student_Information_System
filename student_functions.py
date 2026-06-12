@@ -288,32 +288,34 @@ def login():
 
         except FileNotFoundError:
             print("No account found.")
-            register()def login():
-    print_header("LOGIN")
-
-    while True:
-
-        username = input("Username: ")
-        password = input("Password: ")
-
-        try:
-            with open(ACCOUNT_FILE, "r") as file:
-
-                for line in file:
-
-                    data = line.strip().split(",")
-
-                    if len(data) == 3:
-
-                        user, pwd, role = data
-
-                        if username == user and password == pwd:
-                            print("\n  [✓] Login Successful!")
-                            return username, role
-
-            print("\n  [!] Invalid username or password.")
-
-        except FileNotFoundError:
-            print("No account found.")
             register()
             
+    def change_password(current_user):
+
+    users = []
+
+    with open(ACCOUNT_FILE, "r") as file:
+
+        for line in file:
+            users.append(line.strip().split(","))
+
+    old_pass = input("Current Password: ")
+    new_pass = input("New Password: ")
+
+    for user in users:
+
+        if user[0] == current_user:
+
+            if user[1] != old_pass:
+                print("Wrong password.")
+                return
+
+            user[1] = new_pass
+
+    with open(ACCOUNT_FILE, "w") as file:
+
+        for user in users:
+            file.write(",".join(user) + "\n")
+
+    print("Password changed successfully.")
+
