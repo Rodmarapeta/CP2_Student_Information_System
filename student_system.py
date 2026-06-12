@@ -129,3 +129,153 @@ def open_register():
         fg="black",
         command=do_register
     ).pack(pady=15)
+
+def open_dashboard():
+
+    dash = tk.Toplevel(window)
+    dash.title("Dashboard")
+    dash.geometry("1000x600")
+    dash.configure(bg="white")
+
+    frame = tk.Frame(dash, bg="white")
+    frame.place(relx=0.5, rely=0.5, anchor="center")
+
+    tk.Label(
+        frame,
+        text="STUDENT INFORMATION SYSTEM",
+        font=("Arial", 30, "bold"),
+        fg="#800000",
+        bg="white"
+    ).pack(pady=20)
+
+    btn_frame = tk.Frame(frame, bg="white")
+    btn_frame.pack(pady=20)
+
+    role = current_user["role"]
+
+    if role == "admin":
+
+        tk.Button(btn_frame, text="ADD STUDENT", width=20,
+                  bg="#800000", fg="white",
+                  command=open_add_student).grid(row=0, column=0, padx=10, pady=10)
+
+        tk.Button(btn_frame, text="VIEW STUDENTS", width=20,
+                  bg="#800000", fg="white",
+                  command=open_view_students).grid(row=0, column=1, padx=10, pady=10)
+
+        tk.Button(btn_frame, text="SEARCH", width=20,
+                  bg="#800000", fg="white",
+                  command=open_search_student).grid(row=1, column=0, padx=10, pady=10)
+
+        tk.Button(btn_frame, text="STATISTICS", width=20,
+                  bg="#800000", fg="white",
+                  command=open_statistics).grid(row=1, column=1, padx=10, pady=10)
+
+        tk.Button(btn_frame, text="UPDATE STUDENT", width=20,
+                  bg="#800000", fg="white",
+                  command=open_update_student).grid(row=2, column=0, padx=10, pady=10)
+
+        tk.Button(btn_frame, text="DELETE STUDENT", width=20,
+                  bg="#800000", fg="white",
+                  command=open_delete_student).grid(row=2, column=1, padx=10, pady=10)
+
+        tk.Button(btn_frame, text="CHANGE PASSWORD", width=20,
+                  bg="#800000", fg="white",
+                  command=open_change_password).grid(row=3, column=0, padx=10, pady=10)
+
+        tk.Button(btn_frame, text="LOGOUT", width=20,
+                  bg="orange", fg="white",
+                  command=logout).grid(row=3, column=1, padx=10, pady=10)
+
+    else:
+
+        tk.Button(btn_frame, text="VIEW STUDENTS", width=20,
+                  bg="#800000", fg="white",
+                  command=open_view_students).grid(row=0, column=0, padx=10, pady=10)
+
+        tk.Button(btn_frame, text="SEARCH", width=20,
+                  bg="#800000", fg="white",
+                  command=open_search_student).grid(row=0, column=1, padx=10, pady=10)
+
+        tk.Button(btn_frame, text="STATISTICS", width=20,
+                  bg="#800000", fg="white",
+                  command=open_statistics).grid(row=1, column=0, padx=10, pady=10)
+
+        tk.Button(btn_frame, text="CHANGE PASSWORD", width=20,
+                  bg="#800000", fg="white",
+                  command=open_change_password).grid(row=1, column=1, padx=10, pady=10)
+
+        tk.Button(btn_frame, text="LOGOUT", width=20,
+                  bg="orange", fg="white",
+                  command=logout).grid(row=2, column=0, padx=10, pady=10)
+
+        tk.Button(frame, text="EXIT APP",
+                  bg="red", fg="white",
+                  command=exit_app).pack(pady=10)
+
+
+frame = tk.Frame(window, bg="white")
+frame.place(relx=0.5, rely=0.45, anchor="center")
+
+title = tk.Label(
+    frame,
+    text="STUDENT INFORMATION SYSTEM",
+    font=("Arial", 42, "bold"),
+    fg="#800000",
+    bg="white"
+)
+title.pack(pady=40)
+
+button_frame = tk.Frame(frame, bg="white")
+button_frame.pack(pady=70)
+
+tk.Button(
+    button_frame,
+    text="LOGIN",
+    font=("Arial", 16, "bold"),
+    width=15,
+    height=2,
+    bg="#800000",
+    fg="white",
+    command=open_login
+).grid(row=0, column=0, padx=15)
+
+tk.Button(
+    button_frame,
+    text="REGISTER",
+    font=("Arial", 16, "bold"),
+    width=15,
+    height=2,
+    bg="#FFD700",
+    fg="black",
+    command=open_register
+).grid(row=0, column=1, padx=15)
+
+tk.Button(
+    button_frame,
+    text="EXIT",
+    font=("Arial", 16, "bold"),
+    width=15,
+    height=2,
+    bg="red",
+    fg="white",
+    command=window.destroy
+).grid(row=0, column=2, padx=15)
+
+tk.Button(button_frame,
+    text="CHANGE PASSWORD",
+    width=20,
+    bg="#800000",
+    fg="white",
+    command=open_change_password
+).grid(row=3, column=0)
+
+tk.Button(button_frame,
+    text="LOGOUT",
+    width=20,
+    bg="orange",
+    fg="white",
+    command=logout
+).grid(row=3, column=1)
+
+window.mainloop()
