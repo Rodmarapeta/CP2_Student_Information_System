@@ -460,6 +460,129 @@ def open_update_student():
     tk.Label(frame, text="GRADE", bg="white").pack()
     grade_entry.pack(pady=5)
 
+def open_search_student():
+
+    search_win = tk.Toplevel(window)
+    search_win.title("Search Student")
+    search_win.geometry("600x400")
+    search_win.configure(bg="white")
+
+    frame = tk.Frame(search_win, bg="white")
+    frame.place(relx=0.5, rely=0.5, anchor="center")
+
+    tk.Label(frame,
+             text="SEARCH STUDENT",
+             font=("Arial", 24, "bold"),
+             fg="#800000",
+             bg="white").pack(pady=10)
+
+    tk.Label(frame, text="Enter Name", bg="white").pack()
+
+    name_entry = tk.Entry(frame, font=("Arial", 14), width=30, justify="center")
+    name_entry.pack(pady=10)
+
+    result_box = tk.Text(frame, font=("Arial", 12), width=60, height=10)
+    result_box.pack(pady=10)
+
+    def do_search():
+
+        keyword = name_entry.get().lower()
+        result_box.delete("1.0", "end")
+
+        found = False
+
+        try:
+            with open("students.txt", "r") as f:
+                for line in f:
+                    if keyword in line.lower():
+                        result_box.insert("end", line)
+                        found = True
+
+            if not found:
+                result_box.insert("end", "No student found.")
+
+        except FileNotFoundError:
+            result_box.insert("end", "No file found.")
+
+    tk.Button(
+        frame,
+        text="SEARCH",
+        font=("Arial", 14, "bold"),
+        bg="#800000",
+        fg="white",
+        width=15,
+        command=do_search
+    ).pack(pady=10)
+
+def open_delete_student():
+
+    del_win = tk.Toplevel(window)
+    del_win.title("Delete Student")
+    del_win.geometry("600x400")
+    del_win.configure(bg="white")
+
+    frame = tk.Frame(del_win, bg="white")
+    frame.place(relx=0.5, rely=0.5, anchor="center")
+
+    tk.Label(
+        frame,
+        text="DELETE STUDENT",
+        font=("Arial", 24, "bold"),
+        fg="#800000",
+        bg="white"
+    ).pack(pady=10)
+
+    tk.Label(frame, text="Enter Student ID", bg="white", font=("Arial", 12)).pack()
+
+    id_entry = tk.Entry(frame, font=("Arial", 14), width=30, justify="center")
+    id_entry.pack(pady=10)
+
+    def do_delete():
+
+        sid = id_entry.get()
+        if not sid:
+            return
+
+        try:
+            with open("students.txt", "r") as f:
+                lines = f.readlines()
+
+            found = False
+            new_lines = []
+
+            for line in lines:
+                if line.split(",")[0] != sid:
+                    new_lines.append(line)
+                else:
+                    found = True
+
+            if not found:
+                messagebox.showerror("Error", "Student not found")
+                return
+
+            confirm = messagebox.askyesno("Confirm", "Delete this student?")
+
+            if confirm:
+                with open("students.txt", "w") as f:
+                    f.writelines(new_lines)
+
+                messagebox.showinfo("Success", "Student deleted!")
+                del_win.destroy()
+
+        except FileNotFoundError:
+            messagebox.showerror("Error", "No file found")
+
+    tk.Button(
+        frame,
+        text="DELETE",
+        font=("Arial", 14, "bold"),
+        bg="#800000",
+        fg="white",
+        width=15,
+        command=do_delete
+    ).pack(pady=10)
+
+
 def open_dashboard():
 
     dash = tk.Toplevel(window)
