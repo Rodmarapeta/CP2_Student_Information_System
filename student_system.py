@@ -236,6 +236,89 @@ def open_add_student():
         command=save_student
     ).pack(pady=15)
 
+def open_view_students():
+
+    view_win = tk.Toplevel(window)
+    view_win.title("View Students")
+    view_win.geometry("900x550")
+
+    frame = tk.Frame(view_win)
+    frame.pack(fill="both", expand=True)
+
+    tk.Label(frame, text="STUDENT RECORDS",
+             font=("Arial", 18, "bold")).pack()
+
+    columns = ("ID", "Name", "Age", "Course", "Grade")
+
+    tree = ttk.Treeview(frame, columns=columns, show="headings")
+    tree.pack(fill="both", expand=True)
+
+    for col in columns:
+        tree.heading(col, text=col)
+
+    def load_data():
+        tree.delete(*tree.get_children())
+        try:
+            with open("students.txt", "r") as f:
+                for line in f:
+                    tree.insert("", "end", values=line.strip().split(","))
+        except FileNotFoundError:
+            messagebox.showerror("Error", "No file found")
+
+    def sort_by_id(desc=False):
+        data = [tree.item(i)["values"] for i in tree.get_children()]
+
+        # convert ID safely to int
+        data.sort(key=lambda x: int(x[0]), reverse=desc)
+
+        tree.delete(*tree.get_children())
+        for row in data:
+            tree.insert("", "end", values=row)
+
+    def sort_by_grade(desc=True):
+        data = [tree.item(i)["values"] for i in tree.get_children()]
+        data.sort(key=lambda x: float(x[4]), reverse=desc)
+
+        tree.delete(*tree.get_children())
+        for row in data:
+            tree.insert("", "end", values=row)
+
+    def sort_by_name():
+        data = [tree.item(i)["values"] for i in tree.get_children()]
+        data.sort(key=lambda x: x[1].lower())
+
+        tree.delete(*tree.get_children())
+        for row in data:
+            tree.insert("", "end", values=row)
+
+    load_data()
+
+    btn_frame = tk.Frame(frame)
+    btn_frame.pack()
+
+    tk.Button(btn_frame, text="Grade High → Low",
+              command=lambda: sort_by_grade(True)).pack(side="left")
+
+    tk.Button(btn_frame, text="Grade Low → High",
+              command=lambda: sort_by_grade(False)).pack(side="left")
+
+    tk.Button(btn_frame, text="Sort A → Z",
+              command=sort_by_name).pack(side="left")
+
+    tk.Button(btn_frame, text="ID Low → High",
+              command=lambda: sort_by_id(False)).pack(side="left")
+
+    tk.Button(btn_frame, text="ID High → Low",
+              command=lambda: sort_by_id(True)).pack(side="left")
+
+    def on_select(event):
+        selected = tree.focus()
+        if selected:
+            values = tree.item(selected, "values")
+            open_edit_student(values)
+
+    tree.bind("<Double-1>", on_select)
+
 def open_dashboard():
 
     dash = tk.Toplevel(window)
