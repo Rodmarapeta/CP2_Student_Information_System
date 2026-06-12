@@ -15,11 +15,11 @@ def exit_app():
         window.destroy()
 
 def logout():
-    confirm = messagebox.askyesno("Logout", "Are you sure you want to logout?")
+    confirm = messagebox.askyesno("Logout", "Are you sure?")
     if confirm:
         window.destroy()
-        import os
-        os.system("python gui.py")
+        import sys
+        sys.exit()
 
 def open_login(): 
 
@@ -44,32 +44,32 @@ def open_login():
     password_entry.pack(pady=5)
 
     def do_login():
-        username = username_entry.get()
-        password = password_entry.get()
+    username = username_entry.get()
+    password = password_entry.get()
 
-        try:
-            with open("accounts.txt", "r") as f:
-                for line in f:
-                    user, pwd, role = line.strip().split(",")
+    if not username or not password:
+        messagebox.showerror("Error", "Fill all fields")
+        return
 
-                    if username == user and password == pwd:
+    try:
+        with open("accounts.txt", "r") as f:
+            for line in f:
+                user, pwd, role = line.strip().split(",")
 
-                        current_user["username"] = user
-                        current_user["role"] = role
+                if username == user and password == pwd:
+                    current_user["username"] = user
+                    current_user["role"] = role
 
-                        messagebox.showinfo(
-                            "Success",
-                            f"Login Successful!\nRole: {role}"
-                        )
+                    messagebox.showinfo("Success", f"Login Successful!\nRole: {role}")
 
-                        login_win.destroy()
-                        open_dashboard()
-                        return
+                    login_win.destroy()
+                    open_dashboard()
+                    return
 
-            messagebox.showerror("Error", "Invalid login")
+        messagebox.showerror("Error", "Invalid login")
 
-        except FileNotFoundError:
-            messagebox.showerror("Error", "No accounts found")
+    except FileNotFoundError:
+        messagebox.showerror("Error", "No accounts found")
 
     tk.Button(
         frame,
@@ -107,18 +107,23 @@ def open_register():
     role_entry.pack(pady=5)
 
     def do_register():
-        username = username_entry.get()
-        password = password_entry.get()
-        role = role_entry.get().lower()
+    
+     username = username_entry.get()
+     password = password_entry.get()
+     role = role_entry.get().lower()
 
-        if role not in ["admin", "user"]:
-            role = "user"
+    if not username or not password:
+        messagebox.showerror("Error", "All fields required")
+        return
 
-        with open("accounts.txt", "a") as f:
-            f.write(f"{username},{password},{role}\n")
+    if role not in ["admin", "user"]:
+        role = "user"
 
-        messagebox.showinfo("Success", "Account Created!")
-        reg_win.destroy()
+    with open("accounts.txt", "a") as f:
+        f.write(f"{username},{password},{role}\n")
+
+    messagebox.showinfo("Success", "Account Created!")
+    reg_win.destroy()
 
     tk.Button(
         frame,
@@ -164,8 +169,9 @@ def open_add_student():
     grade_entry = tk.Entry(frame, font=("Arial", 14), width=25, justify="center")
     grade_entry.pack(pady=5)
 
-    def save_student():
-     sid = id_entry.get().strip()
+def save_student():
+    
+    sid = id_entry.get().strip()
     name = name_entry.get().strip()
     age = age_entry.get().strip()
     course = course_entry.get().strip()
@@ -227,14 +233,14 @@ def open_add_student():
     add_win.destroy()
 
     tk.Button(
-        frame,
-        text="SAVE",
-        font=("Arial", 14, "bold"),
-        width=18,
-        bg="#800000",
-        fg="white",
-        command=save_student
-    ).pack(pady=15)
+    frame,
+    text="SAVE",
+    font=("Arial", 14, "bold"),
+    width=18,
+    bg="#800000",
+    fg="white",
+    command=save_student
+).pack(pady=15)
 
 def open_view_students():
 
@@ -681,7 +687,6 @@ def open_change_password():
               bg="#800000", fg="white").pack(pady=10)
 
     def save_update():
-
         sid = id_entry.get()
 
         try:
@@ -867,4 +872,3 @@ tk.Button(button_frame,
 ).grid(row=3, column=1)
 
 window.mainloop()
-
