@@ -1,14 +1,18 @@
 from file_handler import save_data
 
 MAX_STUDENTS = 100
+ACCOUNT_FILE = "accounts.txt"
+
 
 def print_header(title):
     print("\n  ==============================")
     print(f"  {title}")
     print("  ==============================")
 
+
 def print_divider(length):
     print("  " + "─" * length)
+
 
 def prompt_non_empty(prompt):
     while True:
@@ -16,6 +20,7 @@ def prompt_non_empty(prompt):
         if value:
             return value
         print("  [!] This field cannot be empty.")
+
 
 def prompt_age(prompt):
     while True:
@@ -27,6 +32,7 @@ def prompt_age(prompt):
         except:
             print("  [!] Invalid input.")
 
+
 def prompt_grade(prompt):
     while True:
         try:
@@ -37,49 +43,60 @@ def prompt_grade(prompt):
         except:
             print("  [!] Invalid input.")
 
-def show_menu():
-    print("\n+----------------------------------+")
-    print("|  STUDENT INFORMATION SYSTEM     |")
-    print("+----------------------------------+")
-    print("|  1. Add Student                 |")
-    print("|  2. View Students               |")
-    print("|  3. Update Student              |")
-    print("|  4. Delete Student              |")
-    print("|  5. Search Student              |")
-    print("|  6. Sort Students               |")
-    print("|  7. Statistics                  |")
-    print("|  8. Logout                      |")
-    print("|  9. Exit                        |")
-    print("+----------------------------------+")
 
+def show_menu(role):
+
+    if role == "admin":
+        print("\n+----------------------------------+")
+        print("|  STUDENT INFORMATION SYSTEM     |")
+        print("+----------------------------------+")
+        print("|  1. Add Student                 |")
+        print("|  2. View Students               |")
+        print("|  3. Update Student              |")
+        print("|  4. Delete Student              |")
+        print("|  5. Search Student              |")
+        print("|  6. Sort Students               |")
+        print("|  7. Statistics                  |")
+        print("|  8. Change Password             |")
+        print("|  9. Logout                      |")
+        print("| 10. Exit                        |")
+        print("+----------------------------------+")
     else:
-
         print("\n+----------------------------------+")
         print("|            USER MENU            |")
         print("+----------------------------------+")
         print("|  1. View Students               |")
         print("|  2. Search Student              |")
-        print("|  3. Exit                        |")
+        print("|  3. Statistics                  |")
+        print("|  4. Change Password             |")
+        print("|  5. Logout                      |")
+        print("|  6. Exit                        |")
         print("+----------------------------------+")
 
+
 def add_student(names, ages, courses, grades, ids):
+
     if len(names) >= MAX_STUDENTS:
-        print("\n  [!] Student limit reached.")
+        print("\nStudent limit reached.")
         return
 
     print_header("ADD STUDENT")
 
-    name = prompt_non_empty("  Name    : ")
-    
-    if name in names:
-        print("  [!] Student already exists.")
+    try:
+        new_id = int(input("Enter ID: "))
+
+        if new_id in ids:
+            print("ID already exists!")
+            return
+
+    except:
+        print("Invalid ID.")
         return
 
-    age = prompt_age("  Age     : ")
-    course = prompt_non_empty("  Course  : ")
-    grade = prompt_grade("  Grade   : ")
-
-    new_id = ids[-1] + 1 if ids else 1
+    name = prompt_non_empty("Name: ")
+    age = prompt_age("Age: ")
+    course = prompt_non_empty("Course: ")
+    grade = prompt_grade("Grade: ")
 
     ids.append(new_id)
     names.append(name)
@@ -88,179 +105,142 @@ def add_student(names, ages, courses, grades, ids):
     grades.append(grade)
 
     save_data(names, ages, courses, grades, ids)
-    print("\n  [✓] Student added successfully!")
+
+    print("\nStudent added successfully!")
+
 
 def view_students(names, ages, courses, grades, ids):
-    print_header("STUDENT RECORDS")
 
     if len(names) == 0:
-        print("  No student records yet.")
+        print("No records.")
         return
 
-    print(f"{'ID':<5}{'Name':<18}{'Age':<5}{'Course':<12}{'Grade':<8}")
-    print_divider(55)
+    print(f"{'ID':<5}{'Name':<15}{'Age':<5}{'Course':<10}{'Grade':<6}")
 
     for i in range(len(names)):
-        print(f"{ids[i]:<5}{names[i]:<18}{ages[i]:<5}{courses[i]:<12}{grades[i]:<8.2f}")
+        print(f"{ids[i]:<5}{names[i]:<15}{ages[i]:<5}{courses[i]:<10}{grades[i]:<6.2f}")
+
 
 def update_student(names, ages, courses, grades, ids):
-    if len(names) == 0:
-        return
-
     try:
-        id_input = int(input("Enter ID to update: "))
+        id_input = int(input("ID to update: "))
 
         if id_input in ids:
-            index = ids.index(id_input)
+            i = ids.index(id_input)
 
-            print("\nEnter new details:")
-            names[index] = prompt_non_empty("Name: ")
-            ages[index] = prompt_age("Age: ")
-            courses[index] = prompt_non_empty("Course: ")
-            grades[index] = prompt_grade("Grade: ")
+            names[i] = prompt_non_empty("Name: ")
+            ages[i] = prompt_age("Age: ")
+            courses[i] = prompt_non_empty("Course: ")
+            grades[i] = prompt_grade("Grade: ")
 
             save_data(names, ages, courses, grades, ids)
-            print("\n  [✓] Student updated!")
+            print("Updated!")
 
         else:
-            print("  [!] ID not found.")
+            print("Not found.")
 
     except:
-        print("  [!] Invalid input.")
+        print("Invalid input.")
+
 
 def delete_student(names, ages, courses, grades, ids):
     try:
-        id_input = int(input("Enter ID to delete: "))
+        id_input = int(input("ID to delete: "))
 
         if id_input in ids:
-            index = ids.index(id_input)
+            i = ids.index(id_input)
 
-            confirm = input(f"Delete {names[index]}? (yes/no): ")
+            confirm = input("Delete? (yes/no): ")
+
             if confirm.lower() == "yes":
-
                 for arr in (names, ages, courses, grades, ids):
-                    arr.pop(index)
+                    arr.pop(i)
 
                 save_data(names, ages, courses, grades, ids)
-                print("  [✓] Deleted successfully!")
-
-        else:
-            print("  [!] ID not found.")
+                print("Deleted!")
 
     except:
-        print("  [!] Invalid input.")
+        print("Invalid input.")
+
 
 def search_student(names, ages, courses, grades):
-    keyword = input("Enter name: ").lower()
+
+    key = input("Search name: ").lower()
+
     found = False
 
     for i in range(len(names)):
-        if keyword in names[i].lower():
-            print(f"{names[i]} | {courses[i]} | {grades[i]}")
+        if key in names[i].lower():
+            print(names[i], courses[i], grades[i])
             found = True
 
     if not found:
-        print("No match found.")
+        print("No match.")
+
 
 def sort_students(names, ages, courses, grades, ids):
+
     combined = list(zip(ids, names, ages, courses, grades))
-    combined.sort(key=lambda x: x[1])  
+    combined.sort(key=lambda x: x[1])
 
     ids[:], names[:], ages[:], courses[:], grades[:] = zip(*combined)
+
     save_data(names, ages, courses, grades, ids)
-    print("  [✓] Sorted by name!")
+    print("Sorted!")
+
 
 def statistics(names, courses, grades):
+
     print_header("STUDENT STATISTICS")
 
     if len(names) == 0:
-        print("  No student records available.")
+        print("No records.")
         return
 
-    total_students = len(names)
+    total = len(names)
 
-    average_grade = sum(grades) / total_students
+    passed = len([g for g in grades if g >= 75])
+    failed = total - passed
 
-    highest_grade = max(grades)
-    lowest_grade = min(grades)
+    avg = sum(grades) / total
 
-    highest_student = names[grades.index(highest_grade)]
-    lowest_student = names[grades.index(lowest_grade)]
+    highest = max(grades)
+    lowest = min(grades)
 
-    passed = 0
-    failed = 0
+    print("Total:", total)
+    print("Passed:", passed)
+    print("Failed:", failed)
+    print("Average:", avg)
 
-    for grade in grades:
-        if grade >= 75:
-            passed += 1
-        else:
-            failed += 1
+    print("\nTop Students")
 
-    print(f"\n  Total Students  : {total_students}")
-    print(f"  Passed Students : {passed}")
-    print(f"  Failed Students : {failed}")
-    print(f"  Average Grade   : {average_grade:.2f}")
-    print(f"  Highest Grade   : {highest_grade:.2f} ({highest_student})")
-    print(f"  Lowest Grade    : {lowest_grade:.2f} ({lowest_student})")
-
-    print("\n  AVERAGE GRADE PER COURSE")
-    print_divider(35)
-
-    unique_courses = []
-
-    for course in courses:
-        if course not in unique_courses:
-            unique_courses.append(course)
-
-    for course in unique_courses:
-        total = 0
-        count = 0
-
-        for i in range(len(courses)):
-            if courses[i] == course:
-                total += grades[i]
-                count += 1
-
-        average = total / count
-        print(f"  {course:<15} : {average:.2f}")
-
-    print("\n  TOP 3 STUDENTS")
-    print_divider(35)
-
-    students = []
-
-    for i in range(len(names)):
-        students.append((names[i], courses[i], grades[i]))
-
+    students = list(zip(names, courses, grades))
     students.sort(key=lambda x: x[2], reverse=True)
 
-    top_count = min(3, len(students))
+    for i in range(min(3, len(students))):
+        print(i+1, students[i])
 
-    for i in range(top_count):
-        print(
-            f"  {i+1}. {students[i][0]} "
-            f"({students[i][1]}) - {students[i][2]:.2f}"
-        )
-
-        ACCOUNT_FILE = "accounts.txt"
 
 def register():
+
     print_header("REGISTER")
 
-    username = input("Create Username: ")
-    password = input("Create Password: ")
+    username = input("Username: ")
+    password = input("Password: ")
 
-    role = input("Role (admin/user): ").lower()
+    role = input("Role (admin/user): ").strip().lower()
 
     if role not in ["admin", "user"]:
         role = "user"
 
-    with open(ACCOUNT_FILE, "a") as file:
-        file.write(f"{username},{password},{role}\n")
+    with open(ACCOUNT_FILE, "a") as f:
+        f.write(f"{username},{password},{role}\n")
 
-    print("\n  [✓] Account created successfully!")
-    
+    print("Account created!")
+
+
 def login():
+
     print_header("LOGIN")
 
     while True:
@@ -269,52 +249,49 @@ def login():
         password = input("Password: ")
 
         try:
-            with open(ACCOUNT_FILE, "r") as file:
-
-                for line in file:
-
+            with open(ACCOUNT_FILE, "r") as f:
+                for line in f:
                     data = line.strip().split(",")
 
                     if len(data) == 3:
-
                         user, pwd, role = data
 
-                        if username == user and password == pwd:
-                            print("\n  [✓] Login Successful!")
-                            return username, role
+                        if username.lower() == user.lower() and password == pwd:
+                            print("\nLogin successful!")
+                            print("Role:", role.lower())
+                            return user, role.lower()
 
-            print("\n  [!] Invalid username or password.")
+            print("\nInvalid login. Try again.\n")
 
         except FileNotFoundError:
-            print("No account found.")
+            print("\nNo accounts found. Creating new account...\n")
             register()
-            
-    def change_password(current_user):
+
+
+def change_password(current_user):
 
     users = []
 
-    with open(ACCOUNT_FILE, "r") as file:
+    try:
+        with open(ACCOUNT_FILE, "r") as f:
+            for line in f:
+                users.append(line.strip().split(","))
 
-        for line in file:
-            users.append(line.strip().split(","))
+        old = input("Old password: ")
+        new = input("New password: ")
 
-    old_pass = input("Current Password: ")
-    new_pass = input("New Password: ")
+        for u in users:
+            if u[0] == current_user:
+                if u[1] != old:
+                    print("Wrong password")
+                    return
+                u[1] = new
 
-    for user in users:
+        with open(ACCOUNT_FILE, "w") as f:
+            for u in users:
+                f.write(",".join(u) + "\n")
 
-        if user[0] == current_user:
+        print("Password updated!")
 
-            if user[1] != old_pass:
-                print("Wrong password.")
-                return
-
-            user[1] = new_pass
-
-    with open(ACCOUNT_FILE, "w") as file:
-
-        for user in users:
-            file.write(",".join(user) + "\n")
-
-    print("Password changed successfully.")
-
+    except:
+        print("Error")
