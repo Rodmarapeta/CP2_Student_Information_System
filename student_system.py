@@ -156,39 +156,78 @@ def open_register():
     ).pack(pady=20)
 
 def open_add_student():
-
     add_win = tk.Toplevel(window)
     add_win.title("Add Student")
-    add_win.geometry("500x450")
-    add_win.configure(bg="white")
+    add_win.geometry("400x500")
 
-    frame = tk.Frame(add_win, bg="white")
-    frame.place(relx=0.5, rely=0.5, anchor="center")
+    tk.Label(add_win, text="ADD STUDENT", font=("Arial", 16, "bold")).pack(pady=10)
 
-    tk.Label(frame, text="ADD STUDENT",
-             font=("Arial", 28, "bold"),
-             fg="#800000", bg="white").pack(pady=10)
+    sid_entry = tk.Entry(add_win)
+    name_entry = tk.Entry(add_win)
+    age_entry = tk.Entry(add_win)
+    course_entry = tk.Entry(add_win)
+    grade_entry = tk.Entry(add_win)
 
-    tk.Label(frame, text="ID", bg="white").pack()
-    id_entry = tk.Entry(frame, font=("Arial", 14), width=25, justify="center")
-    id_entry.pack(pady=5)
+    tk.Label(add_win, text="ID").pack()
+    sid_entry.pack()
 
-    tk.Label(frame, text="NAME", bg="white").pack()
-    name_entry = tk.Entry(frame, font=("Arial", 14), width=25, justify="center")
-    name_entry.pack(pady=5)
+    tk.Label(add_win, text="Name").pack()
+    name_entry.pack()
 
-    tk.Label(frame, text="AGE", bg="white").pack()
-    age_entry = tk.Entry(frame, font=("Arial", 14), width=25, justify="center")
-    age_entry.pack(pady=5)
+    tk.Label(add_win, text="Age").pack()
+    age_entry.pack()
 
-    tk.Label(frame, text="COURSE", bg="white").pack()
-    course_entry = tk.Entry(frame, font=("Arial", 14), width=25, justify="center")
-    course_entry.pack(pady=5)
+    tk.Label(add_win, text="Course").pack()
+    course_entry.pack()
 
-    tk.Label(frame, text="GRADE", bg="white").pack()
-    grade_entry = tk.Entry(frame, font=("Arial", 14), width=25, justify="center")
-    grade_entry.pack(pady=5)
+    tk.Label(add_win, text="Grade").pack()
+    grade_entry.pack()
 
+    def save_student():
+        sid = sid_entry.get().strip()
+        name = name_entry.get().strip()
+        age = age_entry.get().strip()
+        course = course_entry.get().strip()
+        grade = grade_entry.get().strip()
+
+        if not sid or not name or not age or not course or not grade:
+            messagebox.showerror("Error", "Please fill all fields")
+            return
+
+        if not age.isdigit():
+            messagebox.showerror("Error", "Age must be a number")
+            return
+
+        try:
+            float(grade)
+        except ValueError:
+            messagebox.showerror("Error", "Grade must be a number")
+            return
+
+        try:
+            with open("students.txt", "r") as f:
+                for line in f:
+                    if line.split(",")[0] == sid:
+                        messagebox.showerror("Error", "ID already exists")
+                        return
+        except FileNotFoundError:
+            pass
+
+        with open("students.txt", "a") as f:
+            f.write(f"{sid},{name},{age},{course},{grade}\n")
+
+        messagebox.showinfo("Success", "Student added successfully!")
+        add_win.destroy()
+
+    tk.Button(
+        add_win,
+        text="SAVE STUDENT",
+        font=("Arial", 14, "bold"),
+        bg="#800000",
+        fg="white",
+        command=save_student
+    ).pack(pady=20)
+        
 def save_student():
     
     sid = id_entry.get().strip()
@@ -294,7 +333,6 @@ def open_view_students():
     def sort_by_id(desc=False):
         data = [tree.item(i)["values"] for i in tree.get_children()]
 
-        # convert ID safely to int
         data.sort(key=lambda x: int(x[0]), reverse=desc)
 
         tree.delete(*tree.get_children())
@@ -435,7 +473,6 @@ def open_update_student():
     id_entry = tk.Entry(frame, font=("Arial", 14), width=30, justify="center")
     id_entry.pack(pady=10)
 
-    # fields
     name_entry = tk.Entry(frame, font=("Arial", 14), width=30, justify="center")
     age_entry = tk.Entry(frame, font=("Arial", 14), width=30, justify="center")
     course_entry = tk.Entry(frame, font=("Arial", 14), width=30, justify="center")
