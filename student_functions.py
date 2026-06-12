@@ -239,15 +239,21 @@ def register():
     username = input("Create Username: ")
     password = input("Create Password: ")
 
+    role = input("Role (admin/user): ").lower()
+
+    if role not in ["admin", "user"]:
+        role = "user"
+
     with open(ACCOUNT_FILE, "a") as file:
-        file.write(f"{username},{password}\n")
+        file.write(f"{username},{password},{role}\n")
 
     print("\n  [✓] Account created successfully!")
-
+    
 def login():
     print_header("LOGIN")
 
     while True:
+
         username = input("Username: ")
         password = input("Password: ")
 
@@ -255,41 +261,47 @@ def login():
             with open(ACCOUNT_FILE, "r") as file:
 
                 for line in file:
+
                     data = line.strip().split(",")
 
-                    if len(data) == 2:
-                        user, pwd = data
+                    if len(data) == 3:
+
+                        user, pwd, role = data
 
                         if username == user and password == pwd:
                             print("\n  [✓] Login Successful!")
-                            return
+                            return username, role
 
             print("\n  [!] Invalid username or password.")
 
         except FileNotFoundError:
-            print("\nNo accounts found.")
+            print("No account found.")
+            register()def login():
+    print_header("LOGIN")
+
+    while True:
+
+        username = input("Username: ")
+        password = input("Password: ")
+
+        try:
+            with open(ACCOUNT_FILE, "r") as file:
+
+                for line in file:
+
+                    data = line.strip().split(",")
+
+                    if len(data) == 3:
+
+                        user, pwd, role = data
+
+                        if username == user and password == pwd:
+                            print("\n  [✓] Login Successful!")
+                            return username, role
+
+            print("\n  [!] Invalid username or password.")
+
+        except FileNotFoundError:
+            print("No account found.")
             register()
             
-def register():
-    print_header("REGISTER")
-
-    username = input("Create Username: ")
-    password = input("Create Password: ")
-
-    try:
-        with open(ACCOUNT_FILE, "r") as file:
-
-            for line in file:
-                data = line.strip().split(",")
-
-                if data[0] == username:
-                    print("Username already exists.")
-                    return
-
-    except:
-        pass
-
-    with open(ACCOUNT_FILE, "a") as file:
-        file.write(f"{username},{password}\n")
-
-    print("\n  [✓] Account created successfully!")

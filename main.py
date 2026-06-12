@@ -3,7 +3,7 @@ from student_functions import *
 
 names, ages, courses, grades, ids = load_data()
 
-login() 
+current_user, role = login()
 
 print_header("STUDENT INFORMATION SYSTEM")
 
