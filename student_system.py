@@ -806,6 +806,51 @@ def open_change_password():
         command=save_update
     ).pack(pady=10)
 
+def open_view_my_grade():
+    win = tk.Toplevel(window)
+    win.title("My Grade")
+    win.geometry("400x300")
+    win.configure(bg="white")
+
+    frame = tk.Frame(win, bg="white")
+    frame.place(relx=0.5, rely=0.5, anchor="center")
+
+    tk.Label(frame, text="ENTER YOUR STUDENT ID",
+             font=("Arial", 14, "bold"), bg="white").pack(pady=10)
+
+    id_entry = tk.Entry(frame, font=("Arial", 14), justify="center")
+    id_entry.pack(pady=5)
+
+    result = tk.Label(frame, text="", font=("Arial", 12), bg="white", fg="black")
+    result.pack(pady=20)
+
+    def search_grade():
+        sid = id_entry.get().strip()
+
+        if not sid:
+            messagebox.showerror("Error", "Please enter your ID")
+            return
+
+        try:
+            with open("students.txt", "r") as f:
+                for line in f:
+                    data = line.strip().split(",")
+
+                    if data[0] == sid:
+                        result.config(
+                            text=f"Name: {data[1]}\nCourse: {data[3]}\nGrade: {data[4]}"
+                        )
+                        return
+
+            result.config(text="Student not found")
+
+        except FileNotFoundError:
+            messagebox.showerror("Error", "No student records found")
+
+    tk.Button(frame, text="VIEW GRADE",
+              command=search_grade,
+              bg="#800000", fg="white").pack(pady=10)
+    
 def open_dashboard():
 
     dash = tk.Toplevel(window)
@@ -866,28 +911,35 @@ def open_dashboard():
     else:
 
         tk.Button(btn_frame, text="VIEW STUDENTS", width=20,
-                  bg="#800000", fg="white",
-                  command=open_view_students).grid(row=0, column=0, padx=10, pady=10)
+          bg="#800000", fg="white",
+          command=open_view_students).grid(row=0, column=0, padx=10, pady=10)
 
         tk.Button(btn_frame, text="SEARCH", width=20,
-                  bg="#800000", fg="white",
-                  command=open_search_student).grid(row=0, column=1, padx=10, pady=10)
+          bg="#800000", fg="white",
+          command=open_search_student).grid(row=0, column=1, padx=10, pady=10)
 
         tk.Button(btn_frame, text="STATISTICS", width=20,
-                  bg="#800000", fg="white",
-                  command=open_statistics).grid(row=1, column=0, padx=10, pady=10)
+          bg="#800000", fg="white",
+          command=open_statistics).grid(row=1, column=0, padx=10, pady=10)
 
         tk.Button(btn_frame, text="CHANGE PASSWORD", width=20,
-                  bg="#800000", fg="white",
-                  command=open_change_password).grid(row=1, column=1, padx=10, pady=10)
+          bg="#800000", fg="white",
+          command=open_change_password).grid(row=1, column=1, padx=10, pady=10)
+
+        tk.Button(btn_frame, text="MY GRADE", width=20,
+          bg="#800000", fg="white",
+          command=open_view_my_grade).grid(row=2, column=0, padx=10, pady=10)
 
         tk.Button(btn_frame, text="LOGOUT", width=20,
-                  bg="orange", fg="white",
-                  command=logout).grid(row=2, column=0, padx=10, pady=10)
+          bg="orange", fg="white",
+          command=logout).grid(row=2, column=1, padx=10, pady=10)
 
         tk.Button(frame, text="EXIT APP",
                   bg="red", fg="white",
                   command=exit_app).pack(pady=10)
+        
+        
+        
 
 
 frame = tk.Frame(window, bg="white")
