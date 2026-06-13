@@ -319,7 +319,8 @@ def open_view_students():
     tree.pack(fill="both", expand=True)
 
     for col in columns:
-        tree.heading(col, text=col)
+     tree.heading(col, text=col)
+     tree.column(col, width=150, anchor="center")
 
     def load_data():
         tree.delete(*tree.get_children())
