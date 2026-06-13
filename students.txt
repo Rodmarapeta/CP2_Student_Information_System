@@ -1,9 +1,9 @@
-0001,Julian Marie Amores,19,DIT,99
-0002,Rodmar Apeta,19,DIT,97
-0003,Jocelyn Espinosa,20,DIT,96
-0005,Jim Anderson Malangsa,19,DIT,94
-0006,Kirk Jancey Paz,24,DIT,94
-0007,Lea May pinoc,19,DIT,95
-0008,Precious Lorielle Borlaza,19,DIT,93
-0009,Ralph Espinosa,20,DIT,96
-0004,James Aldrin Delos Santos,20,DIT,90
+001,Amores Julian Marie R., 19, DIT,98
+002,Apeta Rodmar A.,19,DIT,95
+003,Espinosa Jocelyn A.,20,DIT,97
+004,Malangsa Jim Anderson ,19,DIT,94
+005,Delos Santos James Aldrin ,20,DIT,90
+006,Pinoc Lea May E.,19,DIT,93
+007,Paz Kirk Jancey G.,25,DIT,99
+008,Borlaza Precious Lorielle ,20,DIT,94
+009,Espinosa Ralph ,19,DIT,96

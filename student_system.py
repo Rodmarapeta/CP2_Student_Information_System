@@ -156,19 +156,20 @@ def open_register():
     ).pack(pady=20)
 
 def open_add_student():
+
     add_win = tk.Toplevel(window)
     add_win.title("Add Student")
     add_win.geometry("400x500")
+    add_win.configure(bg="white")
 
-    tk.Label(add_win, text="ADD STUDENT", font=("Arial", 16, "bold")).pack(pady=10)
+    tk.Label(
+        add_win,
+        text="ADD STUDENT",
+        font=("Arial", 16, "bold")
+    ).pack(pady=10)
 
+    tk.Label(add_win, text="Student ID").pack()
     sid_entry = tk.Entry(add_win)
-    name_entry = tk.Entry(add_win)
-    age_entry = tk.Entry(add_win)
-    course_entry = tk.Entry(add_win)
-    grade_entry = tk.Entry(add_win)
-
-    tk.Label(add_win, text="ID").pack()
     sid_entry.pack()
 
     tk.Label(add_win, text="Surname").pack()
@@ -184,22 +185,28 @@ def open_add_student():
     mi_entry.pack()
 
     tk.Label(add_win, text="Age").pack()
+    age_entry = tk.Entry(add_win)
     age_entry.pack()
 
     tk.Label(add_win, text="Course").pack()
+    course_entry = tk.Entry(add_win)
     course_entry.pack()
 
     tk.Label(add_win, text="Grade").pack()
+    grade_entry = tk.Entry(add_win)
     grade_entry.pack()
 
     def save_student():
+
         sid = sid_entry.get().strip()
-        name = name_entry.get().strip()
+        surname = surname_entry.get().strip()
+        firstname = firstname_entry.get().strip()
+        mi = mi_entry.get().strip()
         age = age_entry.get().strip()
         course = course_entry.get().strip()
         grade = grade_entry.get().strip()
 
-        if not sid or not name or not age or not course or not grade:
+        if not sid or not surname or not firstname or not age or not course or not grade:
             messagebox.showerror("Error", "Please fill all fields")
             return
 
@@ -208,24 +215,52 @@ def open_add_student():
             return
 
         try:
-            float(grade)
+            grade_num = float(grade)
+
+            if grade_num < 0 or grade_num > 100:
+                messagebox.showerror(
+                    "Error",
+                    "Grade must be between 0 and 100"
+                )
+                return
+
         except ValueError:
-            messagebox.showerror("Error", "Grade must be a number")
+            messagebox.showerror(
+                "Error",
+                "Grade must be numeric"
+            )
             return
+
+        name = f"{surname} {firstname} {mi}"
 
         try:
             with open("students.txt", "r") as f:
                 for line in f:
-                    if line.split(",")[0] == sid:
-                        messagebox.showerror("Error", "ID already exists")
+                    if line.strip().split(",")[0] == sid:
+                        messagebox.showerror(
+                            "Error",
+                            "Student ID already exists!"
+                        )
                         return
         except FileNotFoundError:
             pass
 
+        confirm = messagebox.askyesno(
+            "Confirm Save",
+            "Are you sure you want to save this student?"
+        )
+
+        if not confirm:
+            return
+
         with open("students.txt", "a") as f:
             f.write(f"{sid},{name},{age},{course},{grade}\n")
 
-        messagebox.showinfo("Success", "Student added successfully!")
+        messagebox.showinfo(
+            "Success",
+            "Student Added Successfully!"
+        )
+
         add_win.destroy()
 
     tk.Button(
