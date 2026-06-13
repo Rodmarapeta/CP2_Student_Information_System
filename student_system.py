@@ -171,8 +171,17 @@ def open_add_student():
     tk.Label(add_win, text="ID").pack()
     sid_entry.pack()
 
-    tk.Label(add_win, text="Name").pack()
-    name_entry.pack()
+    tk.Label(add_win, text="Surname").pack()
+    surname_entry = tk.Entry(add_win)
+    surname_entry.pack()
+
+    tk.Label(add_win, text="First Name").pack()
+    firstname_entry = tk.Entry(add_win)
+    firstname_entry.pack()
+
+    tk.Label(add_win, text="Middle Initial").pack()
+    mi_entry = tk.Entry(add_win)
+    mi_entry.pack()
 
     tk.Label(add_win, text="Age").pack()
     age_entry.pack()
@@ -231,7 +240,7 @@ def open_add_student():
 def save_student():
     
     sid = id_entry.get().strip()
-    name = name_entry.get().strip()
+    name = f"{surname_entry.get().strip()}, {firstname_entry.get().strip()} {mi_entry.get().strip()}."    
     age = age_entry.get().strip()
     course = course_entry.get().strip()
     grade = grade_entry.get().strip()
@@ -401,7 +410,7 @@ def open_edit_student(selected_data):
 
     sid, name, age, course, grade = selected_data
 
-    tk.Label(edit_win, text="Name", bg="white").pack()
+    tk.Label(edit_win, text="Surname, First Name, M.I.", bg="white").pack()
     name_entry = tk.Entry(edit_win)
     name_entry.insert(0, name)
     name_entry.pack()
@@ -507,7 +516,7 @@ def open_update_student():
     tk.Button(frame, text="LOAD", command=load_student,
               bg="#800000", fg="white").pack(pady=5)
 
-    tk.Label(frame, text="NAME", bg="white").pack()
+    tk.Label(frame, text="SURNAME, FIRST NAME, M.I.", bg="white").pack()
     name_entry = tk.Entry(frame, font=("Arial", 14), width=30, justify="center")
     name_entry.pack(pady=5)
 
