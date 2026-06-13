@@ -470,17 +470,12 @@ def open_update_student():
     ).pack(pady=10)
 
     tk.Label(frame, text="Enter Student ID", bg="white").pack()
-    id_entry = tk.Entry(frame, font=("Arial", 14), width=30, justify="center")
-    id_entry.pack(pady=10)
 
-    name_entry = tk.Entry(frame, font=("Arial", 14), width=30, justify="center")
-    age_entry = tk.Entry(frame, font=("Arial", 14), width=30, justify="center")
-    course_entry = tk.Entry(frame, font=("Arial", 14), width=30, justify="center")
-    grade_entry = tk.Entry(frame, font=("Arial", 14), width=30, justify="center")
+    id_entry = tk.Entry(frame, font=("Arial", 14), width=30, justify="center")
+    id_entry.pack(pady=5)
 
     def load_student():
-
-        sid = id_entry.get()
+        sid = id_entry.get().strip()
 
         try:
             with open("students.txt", "r") as f:
@@ -512,16 +507,47 @@ def open_update_student():
               bg="#800000", fg="white").pack(pady=5)
 
     tk.Label(frame, text="NAME", bg="white").pack()
+    name_entry = tk.Entry(frame, font=("Arial", 14), width=30, justify="center")
     name_entry.pack(pady=5)
 
     tk.Label(frame, text="AGE", bg="white").pack()
+    age_entry = tk.Entry(frame, font=("Arial", 14), width=30, justify="center")
     age_entry.pack(pady=5)
 
     tk.Label(frame, text="COURSE", bg="white").pack()
+    course_entry = tk.Entry(frame, font=("Arial", 14), width=30, justify="center")
     course_entry.pack(pady=5)
 
     tk.Label(frame, text="GRADE", bg="white").pack()
+    grade_entry = tk.Entry(frame, font=("Arial", 14), width=30, justify="center")
     grade_entry.pack(pady=5)
+
+    def save_student():
+        sid = id_entry.get().strip()
+
+        try:
+            updated_lines = []
+
+            with open("students.txt", "r") as f:
+                for line in f:
+                    data = line.strip().split(",")
+
+                    if data[0] == sid:
+                        new_line = f"{sid},{name_entry.get()},{age_entry.get()},{course_entry.get()},{grade_entry.get()}\n"
+                        updated_lines.append(new_line)
+                    else:
+                        updated_lines.append(line)
+
+            with open("students.txt", "w") as f:
+                f.writelines(updated_lines)
+
+            messagebox.showinfo("Success", "Student updated successfully!")
+
+        except FileNotFoundError:
+            messagebox.showerror("Error", "No file found")
+
+    tk.Button(frame, text="SAVE / UPDATE", command=save_student,
+              bg="green", fg="white").pack(pady=10)
 
 def open_search_student():
 
