@@ -1,0 +1,9 @@
+0001,Julian Marie Amores,19,DIT,99
+0002,Rodmar Apeta,19,DIT,97
+0003,Jocelyn Espinosa,20,DIT,96
+0005,Jim Anderson Malangsa,19,DIT,94
+0006,Kirk Jancey Paz,24,DIT,94
+0007,Lea May pinoc,19,DIT,95
+0008,Precious Lorielle Borlaza,19,DIT,93
+0009,Ralph Espinosa,20,DIT,96
+0004,James Aldrin Delos Santos,20,DIT,90
