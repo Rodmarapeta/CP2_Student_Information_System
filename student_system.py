@@ -767,9 +767,6 @@ def open_change_password():
         except:
             messagebox.showerror("Error", "Something went wrong")
 
-    tk.Button(win, text="UPDATE", command=update_pass,
-              bg="#800000", fg="white").pack(pady=10)
-
     def save_update():
         sid = id_entry.get()
 
@@ -797,15 +794,10 @@ def open_change_password():
         except FileNotFoundError:
             messagebox.showerror("Error", "No file found")
 
-    tk.Button(
-        frame,
-        text="SAVE UPDATE",
-        font=("Arial", 14, "bold"),
-        bg="#800000",
-        fg="white",
-        width=15,
-        command=save_update
-    ).pack(pady=10)
+    def open_change_password():
+        win = tk.Toplevel(window)
+    ...
+    tk.Button(win, text="UPDATE", command=update_pass).pack()
 
 def open_view_my_grade():
     win = tk.Toplevel(window)
